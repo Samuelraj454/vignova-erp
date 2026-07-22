@@ -60,7 +60,7 @@ export default function AdminProducts() {
           <h1 className="text-3xl font-bold tracking-tight">Products Inventory</h1>
           <p className="text-muted-foreground mt-1">Manage your catalog, pricing, and stock levels.</p>
         </div>
-        <Button onClick={handleAdd} className="rounded-xl shadow-lg shadow-primary/20">
+        <Button onClick={handleAdd} className="rounded-xl shadow-lg shadow-primary/20 min-h-[44px] py-2 px-4">
           <Plus className="mr-2 h-4 w-4" /> Add Product
         </Button>
       </div>
@@ -148,7 +148,7 @@ export default function AdminProducts() {
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Button variant="ghost" size="icon" className="h-11 w-11">
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
@@ -181,7 +181,7 @@ export default function AdminProducts() {
       />
 
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="sm:max-w-[425px] rounded-2xl">
+        <DialogContent className="w-full max-w-2xl mx-auto sm:max-w-[600px] max-h-[85vh] overflow-y-auto rounded-2xl">
           <DialogHeader>
             <DialogTitle>Product Details</DialogTitle>
           </DialogHeader>

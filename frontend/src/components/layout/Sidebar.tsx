@@ -28,15 +28,15 @@ export default function Sidebar({ title, links, isOpen = false, setIsOpen }: Sid
       )}
       
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 md:w-64 lg:w-72 border-r bg-background/95 backdrop-blur-xl glass-panel no-scrollbar overflow-y-auto transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0",
-        isOpen ? "translate-x-0" : "-translate-x-full"
+        "fixed inset-y-0 left-0 z-50 border-r bg-background/95 backdrop-blur-xl glass-panel no-scrollbar overflow-y-auto transform transition-all duration-300 ease-in-out md:relative",
+        isOpen ? "w-64 lg:w-72 translate-x-0" : "w-64 md:w-20 lg:w-72 -translate-x-full md:translate-x-0"
       )}>
         <div className="p-5 border-b border-border/50 flex items-center justify-between gap-3 sticky top-0 bg-background/95 backdrop-blur z-10">
           <div className="flex items-center gap-3 overflow-hidden">
             <div className="w-10 h-10 rounded-lg overflow-hidden shadow-sm shrink-0 border border-border">
               <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
             </div>
-            <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent-foreground truncate">
+            <h2 className={cn("text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent-foreground truncate transition-all duration-200", isOpen ? "block" : "md:hidden lg:block")}>
               {title}
             </h2>
           </div>
@@ -58,12 +58,15 @@ export default function Sidebar({ title, links, isOpen = false, setIsOpen }: Sid
                   "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
                   isActive
                     ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  !isOpen && "md:px-0 md:justify-center lg:px-4 lg:justify-start"
                 )
               }
             >
               {link.icon}
-              {link.title}
+              <span className={cn("transition-all duration-200", isOpen ? "block" : "md:hidden lg:block")}>
+                {link.title}
+              </span>
             </NavLink>
           ))}
         </nav>

@@ -59,6 +59,7 @@ export default function AdminPOS() {
   const [customCustomerName, setCustomCustomerName] = useState<string>("");
   const [dueDate, setDueDate] = useState<string>("");
   const [reminderFreq, setReminderFreq] = useState<"Daily" | "Weekly" | "Custom">("Daily");
+  const [mobileTab, setMobileTab] = useState<"products" | "cart">("products");
 
   const filteredProducts = products.filter(p => 
     p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -317,10 +318,32 @@ export default function AdminPOS() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)] gap-4 md:gap-6 pb-20 lg:pb-0">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)] gap-4 md:gap-6 pb-48 lg:pb-0 relative">
+      
+      {/* Mobile Tabs Header */}
+      <div className="lg:hidden flex bg-muted p-1 rounded-xl shrink-0 mt-2 z-10 mx-4 md:mx-0">
+        <Button 
+          variant={mobileTab === "products" ? "default" : "ghost"} 
+          className="flex-1 rounded-lg" 
+          onClick={() => setMobileTab("products")}
+        >
+          <Package className="w-4 h-4 mr-2" /> Products
+        </Button>
+        <Button 
+          variant={mobileTab === "cart" ? "default" : "ghost"} 
+          className="flex-1 rounded-lg relative" 
+          onClick={() => setMobileTab("cart")}
+        >
+          <ShoppingCart className="w-4 h-4 mr-2" /> Cart
+          {cart.length > 0 && (
+            <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 rounded-full">{cart.length}</Badge>
+          )}
+        </Button>
+      </div>
+
       {/* Left side - Products */}
-      <div className="flex-1 flex flex-col gap-4 overflow-hidden h-full min-h-[50vh]">
-        <div className="relative shrink-0">
+      <div className={`flex-1 flex-col gap-4 overflow-hidden h-full min-h-[50vh] ${mobileTab === "products" ? "flex" : "hidden lg:flex"}`}>
+        <div className="relative shrink-0 mx-4 lg:mx-0">
           <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
           <Input 
             placeholder="Search products by name or barcode..." 
@@ -344,9 +367,9 @@ export default function AdminPOS() {
                   whileTap={{ scale: 0.98 }}
                   key={product.id}
                   onClick={() => addToCart(product)}
-                  className="bg-background/80 backdrop-blur-md rounded-xl border p-2 md:p-3 cursor-pointer hover:border-primary/50 transition-colors shadow-sm relative overflow-hidden group flex flex-col"
+                  className="bg-background/80 backdrop-blur-md rounded-xl border p-3 md:p-4 cursor-pointer hover:border-primary/50 transition-colors shadow-sm relative overflow-hidden group flex flex-col min-h-[160px]"
                 >
-                  <div className="aspect-square rounded-lg bg-muted mb-2 md:mb-3 overflow-hidden shrink-0">
+                  <div className="aspect-square rounded-lg bg-muted mb-3 overflow-hidden shrink-0">
                     {product.imageUrl ? (
                       <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     ) : (
@@ -373,7 +396,7 @@ export default function AdminPOS() {
       </div>
 
       {/* Right side - Cart */}
-      <Card className="w-full lg:w-96 flex flex-col glass-card border-white/20 overflow-hidden shadow-xl rounded-2xl shrink-0 h-[60vh] lg:h-full mt-4 lg:mt-0">
+      <Card className={`w-full lg:w-96 flex-col glass-card border-white/20 overflow-hidden shadow-xl rounded-2xl shrink-0 h-full mt-0 ${mobileTab === "cart" ? "flex" : "hidden lg:flex"}`}>
         {completedSale ? (
           <div className="flex flex-col items-center justify-center h-full space-y-6 p-6">
             <div className="h-20 w-20 bg-emerald-100 rounded-full flex items-center justify-center mb-2">
@@ -451,46 +474,61 @@ export default function AdminPOS() {
           )}
         </ScrollArea>
 
-        <CardFooter className="flex flex-col bg-muted/30 p-0 border-t">
+        <CardFooter className="flex flex-col bg-background/95 backdrop-blur-md lg:bg-muted/30 p-0 border-t fixed bottom-[4.5rem] md:bottom-20 lg:static left-0 right-0 z-40 rounded-t-2xl lg:rounded-none shadow-[0_-10px_40px_rgba(0,0,0,0.1)] lg:shadow-none mx-2 lg:mx-0">
           <div className="w-full p-4 space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Subtotal</span>
-              <span>{formatCurrency(subtotal)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Tax (5%)</span>
-              <span>{formatCurrency(tax)}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Discount</span>
-              <div className="flex items-center gap-2">
-                <span className="text-emerald-500">-₹</span>
-                <Input 
-                  type="number" 
-                  value={discount} 
-                  onChange={e => setDiscount(Math.max(0, parseFloat(e.target.value) || 0))} 
-                  className="h-6 w-16 px-1 py-0 text-right text-emerald-500" 
-                />
-              </div>
-            </div>
-            <Separator className="my-2" />
-            <div className="flex justify-between items-center">
-              <span className="text-base font-bold">Total</span>
+            <div className="flex justify-between items-center lg:hidden cursor-pointer" onClick={() => setMobileTab("cart")}>
+              <span className="text-base font-bold flex items-center gap-2"><ShoppingCart className="w-4 h-4"/> Cart Total ({cart.length} items)</span>
               <span className="text-2xl font-bold text-primary">{formatCurrency(total)}</span>
+            </div>
+            
+            <div className={`hidden lg:block space-y-2 ${mobileTab === 'cart' ? 'block !mt-0' : ''}`}>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Subtotal</span>
+                <span>{formatCurrency(subtotal)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Tax (5%)</span>
+                <span>{formatCurrency(tax)}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Discount</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-emerald-500">-₹</span>
+                  <Input 
+                    type="number" 
+                    value={discount} 
+                    onChange={e => setDiscount(Math.max(0, parseFloat(e.target.value) || 0))} 
+                    className="h-8 w-20 px-2 py-1 text-right text-emerald-500 font-medium" 
+                  />
+                </div>
+              </div>
+              <Separator className="my-2" />
+              <div className="flex justify-between items-center">
+                <span className="text-base font-bold">Total</span>
+                <span className="text-2xl font-bold text-primary">{formatCurrency(total)}</span>
+              </div>
             </div>
           </div>
           
           <div className="flex flex-col gap-2 p-4 pt-0 w-full">
             <Button 
               className="h-14 rounded-xl w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 text-lg font-bold" 
-              onClick={() => setCheckoutModal({ open: true, method: null })}
+              onClick={() => {
+                if (mobileTab === 'products' && window.innerWidth < 1024) {
+                  setMobileTab('cart');
+                } else {
+                  setCheckoutModal({ open: true, method: null });
+                }
+              }}
               disabled={cart.length === 0 || completeSaleMutation.isPending}
             >
-              <ShoppingCart className="mr-2 h-5 w-5" /> {completeSaleMutation.isPending ? "Processing..." : "Complete Purchase"}
+              <ShoppingCart className="mr-2 h-5 w-5" /> 
+              {completeSaleMutation.isPending ? "Processing..." : 
+                (mobileTab === 'products' && window.innerWidth < 1024 ? "View Cart" : "Complete Purchase")}
             </Button>
             <Button 
               variant="outline" 
-              className="h-12 rounded-xl w-full border-primary/20 hover:bg-primary/5 text-primary"
+              className={`h-12 rounded-xl w-full border-primary/20 hover:bg-primary/5 text-primary ${mobileTab === 'products' && window.innerWidth < 1024 ? 'hidden lg:flex' : 'flex'}`}
               disabled={cart.length === 0}
               onClick={() => handlePrintInvoice()}
             >
@@ -551,7 +589,7 @@ export default function AdminPOS() {
 
       {/* Advanced Checkout Modal */}
       <Dialog open={checkoutModal.open} onOpenChange={(open) => setCheckoutModal(prev => ({ ...prev, open }))}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] w-[95vw] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl">Complete Purchase</DialogTitle>
           </DialogHeader>
@@ -704,7 +742,7 @@ export default function AdminPOS() {
 
       {/* Payment Collection Modal */}
       <Dialog open={collectionModal.open} onOpenChange={(open) => setCollectionModal(prev => ({ ...prev, open }))}>
-        <DialogContent className="sm:max-w-[400px]">
+        <DialogContent className="sm:max-w-[400px] w-[95vw] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Collect Payment</DialogTitle>
           </DialogHeader>

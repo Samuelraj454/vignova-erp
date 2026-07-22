@@ -96,7 +96,7 @@ export default function AdminInventory() {
                         </span>
                       </td>
                       <td className="px-4 md:px-6 py-4 text-right">
-                        <Button variant="outline" size="sm" onClick={() => handleUpdateStock(item)} className="whitespace-nowrap">
+                        <Button variant="outline" size="sm" onClick={() => handleUpdateStock(item)} className="whitespace-nowrap min-h-[44px] py-2 px-4">
                           Update Stock
                         </Button>
                       </td>

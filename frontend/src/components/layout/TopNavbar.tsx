@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Bell, Search, Menu, Sun, Moon, FileText, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, cn } from "@/lib/utils";
 import { useAuth } from "@/stores/AuthContext";
 import { useTheme } from "@/stores/ThemeContext";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +28,7 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
   
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   
   const [searchResults, setSearchResults] = useState({ sales: [], customers: [] });
@@ -61,21 +62,29 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
   return (
     <header className="h-16 border-b border-border/50 bg-background/60 backdrop-blur-md flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
       <div className="flex items-center gap-2 md:gap-4 flex-1">
-        <Button variant="ghost" size="icon" className="md:hidden shrink-0" onClick={onMenuClick}>
+        <Button variant="ghost" size="icon" className="md:hidden shrink-0 min-h-[44px] min-w-[44px]" onClick={onMenuClick}>
           <Menu className="h-5 w-5" />
         </Button>
-        <div className="relative hidden sm:block w-full max-w-sm md:w-64" ref={searchRef}>
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        {!searchFocused && (
+          <Button variant="ghost" size="icon" className="sm:hidden shrink-0 min-h-[44px] min-w-[44px] ml-auto" onClick={() => setSearchFocused(true)}>
+            <Search className="h-5 w-5" />
+          </Button>
+        )}
+        <div className={cn("relative transition-all duration-300", searchFocused ? "flex-1 block" : "hidden sm:block w-full max-w-sm md:w-64")} ref={searchRef}>
+          <Search className="absolute left-2.5 top-3 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Search invoice or customer..."
-            className="w-full pl-9 bg-muted/50 border-none focus-visible:ring-1 rounded-full"
+            className="w-full pl-9 h-11 bg-muted/50 border-none focus-visible:ring-1 rounded-full"
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
               setShowResults(true);
             }}
-            onFocus={() => setShowResults(true)}
+            onFocus={() => { setShowResults(true); setSearchFocused(true); }}
+            onBlur={(e) => {
+              if (!e.target.value) setSearchFocused(false);
+            }}
           />
           {showResults && searchQuery.length > 1 && (
             <div className="absolute top-full left-0 right-0 mt-2 bg-background border border-border/50 rounded-xl shadow-lg overflow-hidden z-50">
@@ -124,7 +133,7 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
       <div className="flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full relative">
+            <Button variant="ghost" size="icon" className="rounded-full relative min-h-[44px] min-w-[44px]">
               {theme === "dark" ? (
                 <Moon className="h-5 w-5 transition-all" />
               ) : theme === "light" ? (
@@ -148,7 +157,7 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
           </DropdownMenuContent>
         </DropdownMenu>
         
-        <Button variant="ghost" size="icon" className="rounded-full relative" onClick={() => {
+        <Button variant="ghost" size="icon" className="rounded-full relative min-h-[44px] min-w-[44px]" onClick={() => {
           if (user?.role?.toLowerCase() === "admin") {
             navigate("/admin/notifications");
           } else {
@@ -157,14 +166,14 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
         }}>
           <Bell className="h-5 w-5" />
           {user?.role?.toLowerCase() === "admin" && (
-            <span className="absolute top-1.5 right-2 h-2 w-2 rounded-full bg-destructive"></span>
+            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-destructive"></span>
           )}
         </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-              <Avatar className="h-9 w-9 border border-primary/20">
+            <Button variant="ghost" className="relative h-11 w-11 rounded-full min-h-[44px] min-w-[44px]">
+              <Avatar className="h-11 w-11 border border-primary/20">
                 <AvatarFallback className="bg-primary/10 text-primary">
                   {user?.name?.substring(0, 2).toUpperCase() || "US"}
                 </AvatarFallback>

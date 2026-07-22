@@ -84,7 +84,7 @@ export default function AdminEmployees() {
           <h1 className="text-3xl font-bold tracking-tight">Employee Management</h1>
           <p className="text-muted-foreground mt-1">Manage staff accounts, roles, and access credentials.</p>
         </div>
-        <Button onClick={() => setCreateDialogOpen(true)} className="rounded-xl shadow-lg shadow-primary/20 bg-primary">
+        <Button onClick={() => setCreateDialogOpen(true)} className="rounded-xl shadow-lg shadow-primary/20 bg-primary min-h-[44px] py-2 px-4">
           <Plus className="mr-2 h-4 w-4" /> Add Employee
         </Button>
       </div>
@@ -105,6 +105,7 @@ export default function AdminEmployees() {
           </div>
         </CardHeader>
         <CardContent className="p-0">
+          <div className="overflow-x-auto">
           <Table>
             <TableHeader className="bg-muted/50">
               <TableRow>
@@ -147,7 +148,7 @@ export default function AdminEmployees() {
                     <TableCell className="text-right pr-6">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button variant="ghost" size="icon" className="h-11 w-11 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -201,12 +202,13 @@ export default function AdminEmployees() {
               )}
             </TableBody>
           </Table>
+          </div>
         </CardContent>
       </Card>
 
       {/* Create Employee Dialog */}
       <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-        <DialogContent className="sm:max-w-md rounded-2xl">
+        <DialogContent className="w-full max-w-2xl mx-auto sm:max-w-[600px] max-h-[85vh] overflow-y-auto rounded-2xl">
           <DialogHeader>
             <DialogTitle>Add New Employee</DialogTitle>
           </DialogHeader>
@@ -221,7 +223,7 @@ export default function AdminEmployees() {
               <Input id="email" type="email" required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl" />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="phone">Phone *</Label>
                 <Input id="phone" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl" />
@@ -240,7 +242,7 @@ export default function AdminEmployees() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="department">Department</Label>
                 <Input id="department" value={formData.department} onChange={e => setFormData({...formData, department: e.target.value})} className="rounded-xl" />
@@ -252,8 +254,8 @@ export default function AdminEmployees() {
             </div>
 
             <div className="flex justify-end gap-3 mt-6">
-              <Button type="button" variant="outline" onClick={() => setCreateDialogOpen(false)} className="rounded-xl">Cancel</Button>
-              <Button type="submit" disabled={createMutation.isPending} className="rounded-xl bg-primary">
+              <Button type="button" variant="outline" onClick={() => setCreateDialogOpen(false)} className="rounded-xl min-h-[44px] py-2 px-4">Cancel</Button>
+              <Button type="submit" disabled={createMutation.isPending} className="rounded-xl bg-primary min-h-[44px] py-2 px-4">
                 {createMutation.isPending ? "Creating..." : "Create Employee"}
               </Button>
             </div>

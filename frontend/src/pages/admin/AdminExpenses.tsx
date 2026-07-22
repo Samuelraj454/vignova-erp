@@ -51,7 +51,7 @@ export default function AdminExpenses() {
           <h1 className="text-3xl font-bold tracking-tight">Expenses</h1>
           <p className="text-muted-foreground">Track and manage business operational costs</p>
         </div>
-        <Button className="rounded-xl" onClick={handleAdd}>
+        <Button className="rounded-xl min-h-[44px] py-2 px-4" onClick={handleAdd}>
           <Plus className="mr-2 h-4 w-4" /> Add Expense
         </Button>
       </div>
@@ -134,10 +134,10 @@ export default function AdminExpenses() {
                         </span>
                       </td>
                       <td className="px-4 md:px-6 py-4 text-right space-x-1 md:space-x-2 whitespace-nowrap">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(expense)}>
+                        <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => handleEdit(expense)}>
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleDelete(expense.id)}>
+                        <Button variant="ghost" size="icon" className="h-11 w-11 text-destructive hover:text-destructive" onClick={() => handleDelete(expense.id)}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </td>

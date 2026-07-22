@@ -40,7 +40,7 @@ export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen w-full bg-background overflow-hidden relative">
+    <div className="flex h-screen w-full bg-background overflow-x-hidden relative">
       <Sidebar title="Vignova CRM" links={adminLinks} isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
       <main className="flex-1 flex flex-col relative overflow-hidden min-w-0">
         <TopNavbar onMenuClick={() => setSidebarOpen(true)} />

@@ -65,7 +65,7 @@ export default function AdminReports() {
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none opacity-50" />
           </div>
-          <Button className="rounded-xl" onClick={handleExportCSV}><Download className="mr-2 h-4 w-4" /> Export CSV</Button>
+          <Button className="rounded-xl min-h-[44px] py-2 px-4" onClick={handleExportCSV}><Download className="mr-2 h-4 w-4" /> Export CSV</Button>
         </div>
       </div>
 

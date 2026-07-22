@@ -47,7 +47,7 @@ export default function AdminCategories() {
           <h1 className="text-3xl font-bold tracking-tight">Categories</h1>
           <p className="text-muted-foreground">Manage your product categories</p>
         </div>
-        <Button className="rounded-xl" onClick={() => setIsModalOpen(true)}>
+        <Button className="rounded-xl min-h-[44px] py-2 px-4" onClick={() => setIsModalOpen(true)}>
           <Plus className="mr-2 h-4 w-4" /> Add Category
         </Button>
       </div>
@@ -92,13 +92,13 @@ export default function AdminCategories() {
                     </td>
                     <td className="px-4 md:px-6 py-4 text-right">
                       <div className="flex justify-end gap-1 md:gap-2">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary">
+                        <Button variant="ghost" size="icon" className="h-11 w-11 text-muted-foreground hover:text-primary">
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                          className="h-11 w-11 text-muted-foreground hover:text-destructive"
                           onClick={() => handleDelete(category.id)}
                         >
                           <Trash2 className="h-4 w-4" />
@@ -121,7 +121,7 @@ export default function AdminCategories() {
       </div>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="w-[95vw] sm:max-w-md rounded-2xl">
+        <DialogContent className="w-full max-w-2xl mx-auto sm:max-w-[600px] max-h-[85vh] overflow-y-auto rounded-2xl">
           <DialogHeader>
             <DialogTitle>Add New Category</DialogTitle>
           </DialogHeader>
@@ -158,8 +158,8 @@ export default function AdminCategories() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button onClick={handleAddCategory} disabled={!newCategory.name}>Save Category</Button>
+            <Button variant="outline" className="min-h-[44px] py-2 px-4" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+            <Button className="min-h-[44px] py-2 px-4" onClick={handleAddCategory} disabled={!newCategory.name}>Save Category</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
