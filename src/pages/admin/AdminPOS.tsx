@@ -382,7 +382,7 @@ export default function AdminPOS() {
             <h2 className="text-2xl font-bold text-center">Payment Successful!</h2>
             <p className="text-muted-foreground text-center">
               Invoice: {completedSale.billNumber} <br/>
-              Amount: ${completedSale.totalAmount.toFixed(2)}
+              Amount: {formatCurrency(completedSale._total || 0)}
             </p>
             <div className="w-full space-y-3 pt-6">
               <Button className="w-full h-12 rounded-xl" onClick={() => handlePrintInvoice(completedSale)}>
