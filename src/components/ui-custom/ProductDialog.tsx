@@ -27,7 +27,7 @@ export function ProductDialog({ open, onOpenChange, product }: ProductDialogProp
   const [formData, setFormData] = useState<Partial<Product>>({
     name: "",
     sku: "",
-    categoryId: "c1",
+    categoryId: "",
     purchasePrice: 0,
     sellingPrice: 0,
     stock: 0,
@@ -45,7 +45,7 @@ export function ProductDialog({ open, onOpenChange, product }: ProductDialogProp
         setFormData({
           name: "",
           sku: "",
-          categoryId: "c1",
+          categoryId: "",
           purchasePrice: 0,
           sellingPrice: 0,
           stock: 0,
