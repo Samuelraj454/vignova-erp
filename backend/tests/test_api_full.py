@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pytest
 from fastapi.testclient import TestClient
-from backend.main import app
+from backend.core.main import app
 from backend.api.auth import get_current_user
 from backend.models.models import User
 import uuid

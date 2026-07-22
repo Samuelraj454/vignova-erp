@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from backend.db.database import get_db
+from backend.database.database import get_db
 from backend.models.models import User, ActivityLog
 import uuid
 from pydantic import BaseModel

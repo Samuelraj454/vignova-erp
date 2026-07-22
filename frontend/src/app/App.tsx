@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthProvider } from "./store/AuthContext";
-import { ThemeProvider } from "./store/ThemeContext";
-import { ErrorBoundary } from "./components/ErrorBoundary";
-import AppRoutes from "./routes/AppRoutes";
+import { AuthProvider } from "@/stores/AuthContext";
+import { ThemeProvider } from "@/stores/ThemeContext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import AppRoutes from "@/routes/AppRoutes";
 
 
 const queryClient = new QueryClient({
@@ -16,8 +16,8 @@ const queryClient = new QueryClient({
   },
 });
 
-import DeviceSimulator from "./components/ui/DeviceSimulator";
-import { startReminderEngine } from "./services/jobs";
+import DeviceSimulator from "@/components/ui/DeviceSimulator";
+import { startReminderEngine } from "@/services/jobs";
 
 // Database seeding is now handled by the backend.
 

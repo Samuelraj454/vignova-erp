@@ -1,5 +1,5 @@
 import asyncio
-from backend.db.database import AsyncSessionLocal
+from backend.database.database import AsyncSessionLocal
 from backend.api.routes.users import list_employees
 async def main():
     async with AsyncSessionLocal() as db:

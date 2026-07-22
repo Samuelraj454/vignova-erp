@@ -6,7 +6,7 @@ import io
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from backend.db.database import get_db
+from backend.database.database import get_db
 from backend.models import models as db_models
 from backend import schemas
 from typing import List, Dict, Any

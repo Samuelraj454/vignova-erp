@@ -18,7 +18,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.db.database import Base
+from backend.database.database import Base
 from backend.models import models
 from backend.core.config import settings
 

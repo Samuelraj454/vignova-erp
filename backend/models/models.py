@@ -1,7 +1,7 @@
 import uuid
 from sqlalchemy import Column, String, Integer, Float, Boolean, ForeignKey, DateTime, JSON
 from sqlalchemy.orm import relationship
-from backend.db.database import Base
+from backend.database.database import Base
 import datetime
 
 class SystemSequence(Base):

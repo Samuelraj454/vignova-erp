@@ -4,7 +4,7 @@ root = r'd:/Downloads/Hostly/Vignova 1/backend'
 # Mapping of old prefix to new absolute import prefix
 mappings = {
     'from db': 'from backend.db',
-    'import db': 'import backend.db',
+    'import db': 'import backend.database',
     'from api': 'from backend.api',
     'import api': 'import backend.api',
     'from models': 'from backend.models',

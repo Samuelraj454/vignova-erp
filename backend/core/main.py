@@ -11,7 +11,7 @@ from backend.tasks.scheduler import start_scheduler
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi.responses import JSONResponse
 from fastapi import Request
-from backend.db.database import engine, Base
+from backend.database.database import engine, Base
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
 
     # Seed default users (if needed) - keep logic but ensure sequence exists
-    from backend.db.database import AsyncSessionLocal
+    from backend.database.database import AsyncSessionLocal
     from backend.models.models import User, SystemSequence
     from backend.api.auth import get_password_hash
     from sqlalchemy.future import select

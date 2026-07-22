@@ -4,7 +4,7 @@ import { Save, Store, Palette, Shield, CreditCard, Monitor, Moon, Sun, Lock, Use
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useTheme } from "@/store/ThemeContext";
+import { useTheme } from "@/stores/ThemeContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { simulateMessage } from "@/lib/simulator";

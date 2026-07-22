@@ -3,8 +3,8 @@ import { Bell, Search, Menu, Sun, Moon, FileText, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatCurrency } from "@/lib/utils";
-import { useAuth } from "@/store/AuthContext";
-import { useTheme } from "@/store/ThemeContext";
+import { useAuth } from "@/stores/AuthContext";
+import { useTheme } from "@/stores/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/services/api";
 import {

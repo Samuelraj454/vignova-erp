@@ -1,7 +1,7 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from sqlalchemy.future import select
-from backend.db.database import AsyncSessionLocal
+from backend.database.database import AsyncSessionLocal
 from backend.models.models import Invoice, Notification, ActivityLog
 import datetime
 

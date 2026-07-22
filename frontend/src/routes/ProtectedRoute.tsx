@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../store/AuthContext";
+import { useAuth } from "../stores/AuthContext";
 
 export function ProtectedRoute({ allowedRoles }: { allowedRoles: string[] }) {
   console.log("Rendering ProtectedRoute.tsx");

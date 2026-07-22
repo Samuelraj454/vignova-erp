@@ -1,6 +1,6 @@
 "use client"
 
-import { useTheme } from "@/store/ThemeContext"
+import { useTheme } from "@/stores/ThemeContext"
 import { Toaster as Sonner } from "sonner"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
