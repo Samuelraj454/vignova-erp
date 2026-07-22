@@ -96,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       formData.append("username", email);
       formData.append("password", password || "password123");
       
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"

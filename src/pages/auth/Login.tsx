@@ -75,7 +75,7 @@ export default function Login() {
 
   const onChangePasswordSubmit = async (data: ChangePasswordFormValues) => {
     try {
-      const res = await fetch("/api/auth/change-password", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/auth/change-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
