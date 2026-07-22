@@ -148,9 +148,17 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
           </DropdownMenuContent>
         </DropdownMenu>
         
-        <Button variant="ghost" size="icon" className="rounded-full relative" onClick={() => user?.role === "admin" && navigate("/admin/notifications")}>
+        <Button variant="ghost" size="icon" className="rounded-full relative" onClick={() => {
+          if (user?.role?.toLowerCase() === "admin") {
+            navigate("/admin/notifications");
+          } else {
+            import("sonner").then(m => m.toast.info("No new notifications at this time."));
+          }
+        }}>
           <Bell className="h-5 w-5" />
-          <span className="absolute top-1.5 right-2 h-2 w-2 rounded-full bg-destructive"></span>
+          {user?.role?.toLowerCase() === "admin" && (
+            <span className="absolute top-1.5 right-2 h-2 w-2 rounded-full bg-destructive"></span>
+          )}
         </Button>
 
         <DropdownMenu>
