@@ -62,20 +62,20 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
   return (
     <header className="h-16 border-b border-border/50 bg-background/60 backdrop-blur-md flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
       <div className="flex items-center gap-2 md:gap-4 flex-1">
-        <Button variant="ghost" size="icon" className="md:hidden shrink-0 min-h-[44px] min-w-[44px]" onClick={onMenuClick}>
-          <Menu className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="md:hidden shrink-0 min-h-[48px] min-w-[48px]" onClick={onMenuClick}>
+          <Menu className="h-6 w-6" />
         </Button>
         {!searchFocused && (
-          <Button variant="ghost" size="icon" className="sm:hidden shrink-0 min-h-[44px] min-w-[44px] ml-auto" onClick={() => setSearchFocused(true)}>
-            <Search className="h-5 w-5" />
+          <Button variant="ghost" size="icon" className="sm:hidden shrink-0 min-h-[48px] min-w-[48px] ml-auto" onClick={() => setSearchFocused(true)}>
+            <Search className="h-6 w-6" />
           </Button>
         )}
-        <div className={cn("relative transition-all duration-300", searchFocused ? "flex-1 block" : "hidden sm:block w-full max-w-sm md:w-64")} ref={searchRef}>
-          <Search className="absolute left-2.5 top-3 h-4 w-4 text-muted-foreground" />
+        <div className={cn("relative transition-all duration-300", searchFocused ? "flex-1 block absolute left-0 right-0 top-2 mx-4 z-50 bg-background md:relative md:mx-0" : "hidden sm:block w-full max-w-sm md:w-64")} ref={searchRef}>
+          <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Search invoice or customer..."
-            className="w-full pl-9 h-11 bg-muted/50 border-none focus-visible:ring-1 rounded-full"
+            className="w-full pl-10 h-12 bg-muted/50 border-none focus-visible:ring-1 rounded-full text-base"
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -130,10 +130,10 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
           )}
         </div>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full relative min-h-[44px] min-w-[44px]">
+            <Button variant="ghost" size="icon" className="rounded-full relative min-h-[48px] min-w-[48px]">
               {theme === "dark" ? (
                 <Moon className="h-5 w-5 transition-all" />
               ) : theme === "light" ? (
@@ -157,7 +157,7 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
           </DropdownMenuContent>
         </DropdownMenu>
         
-        <Button variant="ghost" size="icon" className="rounded-full relative min-h-[44px] min-w-[44px]" onClick={() => {
+        <Button variant="ghost" size="icon" className="rounded-full relative min-h-[48px] min-w-[48px]" onClick={() => {
           if (user?.role?.toLowerCase() === "admin") {
             navigate("/admin/notifications");
           } else {
@@ -172,8 +172,8 @@ export default function TopNavbar({ onMenuClick }: TopNavbarProps = {}) {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-11 w-11 rounded-full min-h-[44px] min-w-[44px]">
-              <Avatar className="h-11 w-11 border border-primary/20">
+            <Button variant="ghost" className="relative h-12 w-12 rounded-full min-h-[48px] min-w-[48px] p-0">
+              <Avatar className="h-12 w-12 border border-primary/20">
                 <AvatarFallback className="bg-primary/10 text-primary">
                   {user?.name?.substring(0, 2).toUpperCase() || "US"}
                 </AvatarFallback>

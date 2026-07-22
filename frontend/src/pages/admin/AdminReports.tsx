@@ -7,6 +7,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useSalesTrend, useAllSales } from "@/hooks/useSales";
+import { EmptyState } from "@/components/ui-custom/EmptyState";
 
 export default function AdminReports() {
   const { data: salesTrend = [], isLoading: trendLoading } = useSalesTrend();
@@ -111,7 +112,48 @@ export default function AdminReports() {
 
         <div className="glass-panel p-6 rounded-2xl col-span-2 mt-4">
           <h2 className="text-lg font-semibold mb-6">Recent Transactions</h2>
-          <div className="overflow-x-auto w-full">
+          
+          {/* Mobile View */}
+          <div className="md:hidden space-y-4">
+            {allSales.length === 0 && !isLoading ? (
+              <EmptyState icon="📊" title="No transactions" description="No recent transactions found." />
+            ) : (
+              allSales.slice(0, 10).map((sale) => (
+                <div key={sale.id} className="bg-background/50 border border-border/50 rounded-xl p-4 flex flex-col gap-4">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="font-semibold text-lg">{sale.billNumber}</div>
+                      <div className="text-sm text-muted-foreground">{new Date(sale.date).toLocaleDateString()}</div>
+                    </div>
+                    <Badge variant={sale.status === "Paid" ? "default" : sale.status === "Partially Paid" ? "secondary" : sale.status === "Pending" || sale.status === "Not Paid" ? "destructive" : "outline"}>
+                      {sale.status}
+                    </Badge>
+                  </div>
+                  <div>
+                    <div className="text-sm text-muted-foreground">Customer: {sale.customerName}</div>
+                    <div className="text-sm text-muted-foreground">Method: {sale.paymentMethod}</div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-sm text-center">
+                    <div className="bg-muted/50 p-2 rounded-lg">
+                      <div className="text-muted-foreground text-[10px] uppercase tracking-wider mb-1">Collected</div>
+                      <div className="text-emerald-500 font-medium truncate">{formatCurrency(sale.paidAmount?.toFixed(2) || "0.00")}</div>
+                    </div>
+                    <div className="bg-muted/50 p-2 rounded-lg">
+                      <div className="text-muted-foreground text-[10px] uppercase tracking-wider mb-1">Pending</div>
+                      <div className="text-destructive font-medium truncate">{formatCurrency(sale.pendingAmount?.toFixed(2) || "0.00")}</div>
+                    </div>
+                    <div className="bg-muted/50 p-2 rounded-lg">
+                      <div className="text-muted-foreground text-[10px] uppercase tracking-wider mb-1">Total</div>
+                      <div className="font-medium truncate">{formatCurrency(sale.totalAmount)}</div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* Desktop View */}
+          <div className="hidden md:block overflow-x-auto w-full">
             <Table className="min-w-[600px]">
               <TableHeader>
                 <TableRow>
@@ -144,8 +186,10 @@ export default function AdminReports() {
                 ))}
                 {allSales.length === 0 && !isLoading && (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center text-muted-foreground h-24">
-                      No transactions found
+                    <TableCell colSpan={8} className="p-0">
+                      <div className="py-10">
+                        <EmptyState icon="📊" title="No transactions" description="No recent transactions found." />
+                      </div>
                     </TableCell>
                   </TableRow>
                 )}

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useExpenses, useDeleteExpense } from "@/hooks/useExpenses";
 import { ExpenseDialog } from "@/components/ui-custom/ExpenseDialog";
+import { EmptyState } from "@/components/ui-custom/EmptyState";
 import type { Expense } from "@/services/expenses";
 
 export default function AdminExpenses() {
@@ -51,7 +52,7 @@ export default function AdminExpenses() {
           <h1 className="text-3xl font-bold tracking-tight">Expenses</h1>
           <p className="text-muted-foreground">Track and manage business operational costs</p>
         </div>
-        <Button className="rounded-xl min-h-[44px] py-2 px-4" onClick={handleAdd}>
+        <Button className="rounded-xl min-h-[44px] py-2 px-4 w-full sm:w-auto" onClick={handleAdd}>
           <Plus className="mr-2 h-4 w-4" /> Add Expense
         </Button>
       </div>
@@ -77,20 +78,63 @@ export default function AdminExpenses() {
         </div>
       </div>
 
-      <div className="glass-panel p-6 rounded-2xl">
-        <div className="flex gap-4 mb-6">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder="Search expenses..." 
-              className="pl-9 bg-background/50 border-border/50"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+      <div className="relative w-full mb-6">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input 
+          placeholder="Search expenses..." 
+          className="pl-9 w-full bg-background/50 border-border/50"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      <div className="glass-panel p-4 md:p-6 rounded-2xl">
+        <div className="md:hidden space-y-4">
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-10 gap-2 text-muted-foreground">
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+              <span>Loading expenses...</span>
+            </div>
+          ) : filtered.length === 0 ? (
+            <EmptyState icon="💳" title="No Expenses Found" description={`No expenses found matching "${searchTerm}"`} />
+          ) : (
+            filtered.map((expense) => (
+              <div key={expense.id} className="bg-background/50 border border-border/50 rounded-xl p-4 flex flex-col gap-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium mb-2 ${
+                      expense.status === 'Paid' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'
+                    }`}>
+                      {expense.status}
+                    </span>
+                    <h3 className="font-bold text-lg">{expense.category}</h3>
+                    <p className="text-sm text-muted-foreground">{expense.date}</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="font-bold text-rose-500">-{formatCurrency(expense.amount)}</span>
+                  </div>
+                </div>
+                
+                {expense.description && (
+                  <div className="text-sm text-muted-foreground border-t border-border/50 pt-2 mt-2">
+                    {expense.description}
+                  </div>
+                )}
+
+                <div className="flex gap-2 mt-2">
+                  <Button variant="outline" className="flex-1 min-h-[48px]" onClick={() => handleEdit(expense)}>
+                    <Edit className="h-4 w-4 mr-2" /> Edit
+                  </Button>
+                  <Button variant="outline" className="flex-1 min-h-[48px] text-destructive hover:text-destructive" onClick={() => handleDelete(expense.id)}>
+                    <Trash2 className="h-4 w-4 mr-2" /> Delete
+                  </Button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
-        <div className="rounded-xl border border-border/50 overflow-hidden bg-background/50">
+        <div className="hidden md:block rounded-xl border border-border/50 overflow-hidden bg-background/50">
           <div className="overflow-x-auto w-full">
             <table className="w-full text-sm text-left min-w-[500px] md:min-w-full">
               <thead className="bg-muted/50 text-muted-foreground font-medium border-b border-border/50">
@@ -115,8 +159,8 @@ export default function AdminExpenses() {
                   </tr>
                 ) : filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="text-center py-10 text-muted-foreground">
-                      No expenses found matching "{searchTerm}"
+                    <td colSpan={6} className="p-0">
+                      <EmptyState icon="💳" title="No Expenses Found" description={`No expenses found matching "${searchTerm}"`} />
                     </td>
                   </tr>
                 ) : (

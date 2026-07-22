@@ -324,19 +324,19 @@ export default function AdminPOS() {
       <div className="lg:hidden flex bg-muted p-1 rounded-xl shrink-0 mt-2 z-10 mx-4 md:mx-0">
         <Button 
           variant={mobileTab === "products" ? "default" : "ghost"} 
-          className="flex-1 rounded-lg" 
+          className="flex-1 rounded-lg min-h-[48px] text-base" 
           onClick={() => setMobileTab("products")}
         >
-          <Package className="w-4 h-4 mr-2" /> Products
+          <Package className="w-5 h-5 mr-2" /> Products
         </Button>
         <Button 
           variant={mobileTab === "cart" ? "default" : "ghost"} 
-          className="flex-1 rounded-lg relative" 
+          className="flex-1 rounded-lg relative min-h-[48px] text-base" 
           onClick={() => setMobileTab("cart")}
         >
-          <ShoppingCart className="w-4 h-4 mr-2" /> Cart
+          <ShoppingCart className="w-5 h-5 mr-2" /> Cart
           {cart.length > 0 && (
-            <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 rounded-full">{cart.length}</Badge>
+            <Badge variant="destructive" className="absolute -top-2 -right-2 h-6 w-6 flex items-center justify-center p-0 rounded-full">{cart.length}</Badge>
           )}
         </Button>
       </div>
@@ -456,15 +456,15 @@ export default function AdminPOS() {
                       <div className="text-primary font-bold text-sm">{formatCurrency(item.sellingPrice)}</div>
                     </div>
                     <div className="flex items-center gap-2 bg-muted/50 rounded-lg p-1">
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => updateQuantity(item.id, -1)}>
-                        <Minus size={14} />
+                      <Button variant="ghost" size="icon" className="min-h-[48px] min-w-[48px]" onClick={() => updateQuantity(item.id, -1)}>
+                        <Minus size={20} />
                       </Button>
-                      <span className="text-sm font-medium w-4 text-center">{item.quantity}</span>
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => updateQuantity(item.id, 1)}>
-                        <Plus size={14} />
+                      <span className="text-base font-bold w-6 text-center">{item.quantity}</span>
+                      <Button variant="ghost" size="icon" className="min-h-[48px] min-w-[48px]" onClick={() => updateQuantity(item.id, 1)}>
+                        <Plus size={20} />
                       </Button>
-                      <Button variant="destructive" size="icon" className="h-7 w-7 ml-1" onClick={() => removeFromCart(item.id)}>
-                        <Trash2 size={14} />
+                      <Button variant="destructive" size="icon" className="min-h-[48px] min-w-[48px] ml-1" onClick={() => removeFromCart(item.id)}>
+                        <Trash2 size={20} />
                       </Button>
                     </div>
                   </motion.div>

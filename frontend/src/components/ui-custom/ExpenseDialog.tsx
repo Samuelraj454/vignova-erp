@@ -59,27 +59,26 @@ export function ExpenseDialog({ open, onOpenChange, expense }: ExpenseDialogProp
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[95vw] sm:max-w-[425px] rounded-2xl max-h-[90vh] overflow-y-auto">
-        <form onSubmit={handleSubmit}>
-          <DialogHeader>
+      <DialogContent className="w-full h-[100dvh] sm:h-auto sm:max-w-2xl sm:rounded-2xl overflow-y-auto">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full">
+          <DialogHeader className="flex-shrink-0">
             <DialogTitle>{isEditing ? "Edit Expense" : "Add Expense"}</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="flex flex-col sm:grid sm:grid-cols-4 sm:items-center gap-2 sm:gap-4">
-              <Label htmlFor="date" className="text-left sm:text-right font-medium">Date</Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4 flex-1">
+            <div className="space-y-2">
+              <Label htmlFor="date" className="font-medium">Date</Label>
               <Input 
                 id="date" 
                 type="date"
                 value={formData.date || ""} 
                 onChange={e => setFormData({...formData, date: e.target.value})} 
-                className="col-span-3" 
                 required 
               />
             </div>
-            <div className="flex flex-col sm:grid sm:grid-cols-4 sm:items-center gap-2 sm:gap-4">
-              <Label className="text-left sm:text-right font-medium">Category</Label>
+            <div className="space-y-2">
+              <Label className="font-medium">Category</Label>
               <Select value={formData.category} onValueChange={(v) => setFormData({...formData, category: v})}>
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -92,18 +91,17 @@ export function ExpenseDialog({ open, onOpenChange, expense }: ExpenseDialogProp
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex flex-col sm:grid sm:grid-cols-4 sm:items-center gap-2 sm:gap-4">
-              <Label htmlFor="description" className="text-left sm:text-right font-medium">Description</Label>
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="description" className="font-medium">Description</Label>
               <Input 
                 id="description" 
                 value={formData.description || ""} 
                 onChange={e => setFormData({...formData, description: e.target.value})} 
-                className="col-span-3" 
                 required 
               />
             </div>
-            <div className="flex flex-col sm:grid sm:grid-cols-4 sm:items-center gap-2 sm:gap-4">
-              <Label htmlFor="amount" className="text-left sm:text-right font-medium">Amount (₹)</Label>
+            <div className="space-y-2">
+              <Label htmlFor="amount" className="font-medium">Amount (₹)</Label>
               <Input 
                 id="amount" 
                 type="number"
@@ -111,14 +109,13 @@ export function ExpenseDialog({ open, onOpenChange, expense }: ExpenseDialogProp
                 min="0"
                 value={formData.amount || 0} 
                 onChange={e => setFormData({...formData, amount: parseFloat(e.target.value) || 0})} 
-                className="col-span-3" 
                 required 
               />
             </div>
-            <div className="flex flex-col sm:grid sm:grid-cols-4 sm:items-center gap-2 sm:gap-4">
-              <Label className="text-left sm:text-right font-medium">Status</Label>
+            <div className="space-y-2">
+              <Label className="font-medium">Status</Label>
               <Select value={formData.status} onValueChange={(v: "Paid" | "Pending") => setFormData({...formData, status: v})}>
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -128,11 +125,11 @@ export function ExpenseDialog({ open, onOpenChange, expense }: ExpenseDialogProp
               </Select>
             </div>
           </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isPending}>
+          <DialogFooter className="mt-auto sm:mt-0 pt-4 pb-8 sm:pb-0 flex-shrink-0">
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isPending} className="w-full sm:w-auto">
               Cancel
             </Button>
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
               {isPending ? "Saving..." : "Save Expense"}
             </Button>
           </DialogFooter>

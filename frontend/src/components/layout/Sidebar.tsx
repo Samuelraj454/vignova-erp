@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,12 +18,23 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ title, links, isOpen = false, setIsOpen }: SidebarProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   return (
     <>
       {/* Mobile Backdrop Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden" 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden" 
           onClick={() => setIsOpen?.(false)}
         />
       )}

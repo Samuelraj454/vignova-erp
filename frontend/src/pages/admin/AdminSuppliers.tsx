@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSuppliers, useDeleteSupplier } from "@/hooks/useSuppliers";
 import { SupplierDialog } from "@/components/ui-custom/SupplierDialog";
+import { EmptyState } from "@/components/ui-custom/EmptyState";
 import type { Supplier } from "@/services/suppliers";
 
 export default function AdminSuppliers() {
@@ -46,25 +47,70 @@ export default function AdminSuppliers() {
           <h1 className="text-3xl font-bold tracking-tight">Suppliers</h1>
           <p className="text-muted-foreground">Manage your vendor directory</p>
         </div>
-        <Button className="rounded-xl min-h-[44px] py-2 px-4" onClick={handleAdd}>
+        <Button className="rounded-xl min-h-[44px] py-2 px-4 w-full sm:w-auto" onClick={handleAdd}>
           <Plus className="mr-2 h-4 w-4" /> Add Supplier
         </Button>
       </div>
 
-      <div className="glass-panel p-6 rounded-2xl">
-        <div className="flex gap-4 mb-6">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder="Search suppliers..." 
-              className="pl-9 bg-background/50 border-border/50"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+      <div className="relative w-full">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input 
+          placeholder="Search suppliers..." 
+          className="pl-9 w-full bg-background/50 border-border/50"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      <div className="glass-panel p-4 md:p-6 rounded-2xl">
+        <div className="md:hidden space-y-4">
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-10 gap-2 text-muted-foreground">
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+              <span>Loading suppliers...</span>
+            </div>
+          ) : filtered.length === 0 ? (
+            <EmptyState icon="👥" title="No Suppliers Found" description={`No suppliers found matching "${searchTerm}"`} />
+          ) : (
+            filtered.map((supplier) => (
+              <div key={supplier.id} className="bg-background/50 border border-border/50 rounded-xl p-4 flex flex-col gap-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-bold text-lg">{supplier.name}</h3>
+                    <p className="text-sm text-muted-foreground">{supplier.contactPerson}</p>
+                  </div>
+                  <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium text-xs">
+                    {supplier.activeOrders} Orders
+                  </span>
+                </div>
+                
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Mail className="h-4 w-4" /> {supplier.email}
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Phone className="h-4 w-4" /> {supplier.phone}
+                  </div>
+                  <div className="flex justify-between border-t border-border/50 pt-2 mt-2">
+                    <span className="text-muted-foreground">Lead Time</span>
+                    <span className="font-medium">{supplier.leadTime}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-2">
+                  <Button variant="outline" className="flex-1 min-h-[48px]" onClick={() => handleEdit(supplier)}>
+                    <Edit className="h-4 w-4 mr-2" /> Edit
+                  </Button>
+                  <Button variant="outline" className="flex-1 min-h-[48px] text-destructive hover:text-destructive" onClick={() => handleDelete(supplier.id)}>
+                    <Trash2 className="h-4 w-4 mr-2" /> Delete
+                  </Button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
-        <div className="rounded-xl border border-border/50 overflow-hidden bg-background/50">
+        <div className="hidden md:block rounded-xl border border-border/50 overflow-hidden bg-background/50">
           <div className="overflow-x-auto w-full">
             <table className="w-full text-sm text-left min-w-[600px] md:min-w-full">
               <thead className="bg-muted/50 text-muted-foreground font-medium border-b border-border/50">
@@ -89,8 +135,8 @@ export default function AdminSuppliers() {
                   </tr>
                 ) : filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="text-center py-10 text-muted-foreground">
-                      No suppliers found matching "{searchTerm}"
+                    <td colSpan={6} className="p-0">
+                      <EmptyState icon="👥" title="No Suppliers Found" description={`No suppliers found matching "${searchTerm}"`} />
                     </td>
                   </tr>
                 ) : (
