@@ -80,9 +80,13 @@ def require_role(allowed_roles: List[str]):
         return current_user
     return role_checker
 
+from sqlalchemy import or_
+
 @router.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.email == form_data.username))
+    result = await db.execute(select(User).where(
+        or_(User.email == form_data.username, User.employee_id == form_data.username)
+    ))
     user = result.scalars().first()
     
     if not user or not verify_password(form_data.password, user.password_hash):
