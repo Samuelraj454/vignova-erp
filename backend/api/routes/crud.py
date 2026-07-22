@@ -310,6 +310,9 @@ async def create_product(
         image_url = await process_image_upload(image)
         
     product_id = f"prod_{uuid.uuid4().hex[:8]}"
+    if not category_id: category_id = None
+    if not supplier_id: supplier_id = None
+        
     db_item = db_models.Product(
         id=product_id,
         name=name,

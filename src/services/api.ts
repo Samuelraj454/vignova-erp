@@ -2,7 +2,9 @@ import axios from "axios";
 
 // Create an Axios instance pointing to FastAPI backend
 export const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL || ""}/api`,
+  baseURL: (import.meta.env.VITE_API_URL || "").endsWith("/api") 
+    ? import.meta.env.VITE_API_URL 
+    : `${(import.meta.env.VITE_API_URL || "").replace(/\/$/, "")}/api`,
   headers: {
     "Content-Type": "application/json",
   },
