@@ -97,11 +97,11 @@ export default function Signup() {
               </div>
               
               <div className="space-y-1.5 text-left w-full">
-                <Label htmlFor="email" className="text-xs font-medium text-gray-700">Email</Label>
+                <Label htmlFor="email" className="text-xs font-medium text-gray-700">Email Address</Label>
                 <Input 
                   id="email" 
                   type="email" 
-                  placeholder="admin@example.com" 
+                  placeholder="Enter your email" 
                   {...signupForm.register("email")} 
                   className="bg-[#edf2fa] border-transparent focus-visible:ring-blue-500 h-11 text-sm rounded-lg text-gray-900 placeholder:text-gray-400" 
                 />

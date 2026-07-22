@@ -170,7 +170,7 @@ export default function Login() {
                       <Input 
                         id="email" 
                         type="text" 
-                        placeholder={loginType === "admin" ? "admin@example.com" : "employee@example.com"} 
+                        placeholder={loginType === "admin" ? "Enter admin email" : "Enter employee ID/email"} 
                         {...adminForm.register("email")} 
                         className="bg-[#edf2fa] border-transparent focus-visible:ring-blue-500 h-11 text-sm rounded-lg text-gray-900 placeholder:text-gray-400" 
                       />
@@ -178,13 +178,14 @@ export default function Login() {
                         <p className="text-xs text-red-500">{adminForm.formState.errors.email.message}</p>
                       )}
                     </div>
+                    
                     <div className="space-y-1.5 text-left w-full">
                       <Label htmlFor="password" className="text-xs font-medium text-gray-700">Password</Label>
                       <div className="relative">
                         <Input 
                           id="password" 
                           type={showPassword ? "text" : "password"} 
-                          placeholder="••••••••" 
+                          placeholder="Enter password" 
                           {...adminForm.register("password")} 
                           className="bg-[#edf2fa] border-transparent focus-visible:ring-blue-500 h-11 text-sm rounded-lg text-gray-900 placeholder:text-gray-400 pr-10" 
                         />

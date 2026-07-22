@@ -16,7 +16,6 @@ const queryClient = new QueryClient({
   },
 });
 
-import DeviceSimulator from "@/components/ui/DeviceSimulator";
 import { startReminderEngine } from "@/services/jobs";
 
 // Database seeding is now handled by the backend.
@@ -31,10 +30,10 @@ export default function App() {
                     <AuthProvider>
                         <AppRoutes />
                         <Toaster position="top-right" richColors />
-                        <DeviceSimulator />
-                    </AuthProvider>
+                        </AuthProvider>
                 </ThemeProvider>
             </QueryClientProvider>
         </ErrorBoundary>
     );
 }
+

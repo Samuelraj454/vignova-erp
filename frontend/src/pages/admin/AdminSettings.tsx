@@ -7,8 +7,6 @@ import { Label } from "@/components/ui/label";
 import { useTheme } from "@/stores/ThemeContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { simulateMessage } from "@/lib/simulator";
-
 export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState("general");
   const { theme: themeMode, setTheme: setThemeMode, accentColor, setAccentColor } = useTheme();
@@ -34,9 +32,7 @@ export default function AdminSettings() {
       setExpectedCode(code);
       setIs2faModalOpen(true);
       
-      setTimeout(() => {
-        simulateMessage("sms", "Vignova Security", `Your Vignova CRM verification code is ${code}. Do not share this with anyone.`);
-      }, 1500);
+      
     }
   };
 
@@ -337,3 +333,4 @@ export default function AdminSettings() {
     </motion.div>
   );
 }
+

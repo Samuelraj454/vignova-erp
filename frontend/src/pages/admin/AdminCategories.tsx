@@ -6,13 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
-const INITIAL_CATEGORIES = [
-  { id: 1, name: "Electronics", description: "Gadgets and devices", itemsCount: 145, status: "Active" },
-  { id: 2, name: "Apparel", description: "Clothing and accessories", itemsCount: 320, status: "Active" },
-  { id: 3, name: "Home & Garden", description: "Furniture and outdoor", itemsCount: 89, status: "Active" },
-  { id: 4, name: "Groceries", description: "Food and beverages", itemsCount: 560, status: "Active" },
-  { id: 5, name: "Toys", description: "Kids and entertainment", itemsCount: 42, status: "Inactive" },
-];
+const INITIAL_CATEGORIES: any[] = [];
 
 export default function AdminCategories() {
   const [categories, setCategories] = useState(INITIAL_CATEGORIES);
