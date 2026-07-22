@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Receipt, Clock, Wallet, Search } from "lucide-react";
 import { StatCard } from "@/components/ui-custom/StatCard";
+import { useDashboardStats } from "@/hooks/useSales";
 import { getRecentSales } from "@/services/sales";
 import type { Sale } from "@/services/sales";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,12 +14,17 @@ import { useNavigate } from "react-router-dom";
 
 export default function EmployeeDashboard() {
   const [recentSales, setRecentSales] = useState<Sale[]>([]);
+  const { data: stats } = useDashboardStats();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
-      const salesData = await getRecentSales();
-      setRecentSales(salesData as Sale[]);
+      try {
+        const salesData = await getRecentSales();
+        setRecentSales(salesData as Sale[]);
+      } catch (error) {
+        console.error("Failed to fetch recent sales", error);
+      }
     }
     fetchData();
   }, []);
@@ -44,17 +50,17 @@ export default function EmployeeDashboard() {
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard 
           title="My Sales Today" 
-          value={formatCurrency(1240)}
+          value={formatCurrency(stats?.todaySales || 0)}
           icon={<Receipt size={20} />}
         />
         <StatCard 
           title="Bills Created" 
-          value="18"
+          value={recentSales.length > 0 ? `${recentSales.length}+` : "0"}
           icon={<Wallet size={20} />}
         />
         <StatCard 
           title="Pending Credits" 
-          value="2"
+          value={(stats?.pendingCredits || 0).toString()}
           icon={<Clock size={20} />}
           className="border-accent/30"
         />

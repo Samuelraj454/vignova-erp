@@ -168,3 +168,86 @@ async def process_checkout(req: CheckoutRequest, db: AsyncSession = Depends(get_
     except Exception as e:
         await db.rollback()
         raise HTTPException(status_code=400, detail=str(e))
+
+@router.get("/dashboard-stats")
+async def get_dashboard_stats(db: AsyncSession = Depends(get_db)):
+    # Calculate today's stats
+    today = datetime.datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+    
+    # Invoices for today
+    inv_res = await db.execute(select(db_models.Invoice).where(db_models.Invoice.date >= today))
+    invoices = inv_res.scalars().all()
+    
+    today_sales = sum(i.total_amount for i in invoices)
+    today_paid = sum(i.paid_amount for i in invoices)
+    
+    # All pending credits (outstanding invoices)
+    pending_res = await db.execute(select(db_models.Invoice).where(db_models.Invoice.pending_amount > 0))
+    pending_invoices = pending_res.scalars().all()
+    pending_credits = sum(i.pending_amount for i in pending_invoices)
+    
+    # Low stock items
+    stock_res = await db.execute(select(db_models.Product).where(db_models.Product.stock <= db_models.Product.min_stock))
+    low_stock_items = len(stock_res.scalars().all())
+    
+    return {
+        "todaySales": today_sales,
+        "todayPaidRevenue": today_paid,
+        "pendingCredits": pending_credits,
+        "lowStockItems": low_stock_items
+    }
+
+@router.get("/trend")
+async def get_sales_trend(db: AsyncSession = Depends(get_db)):
+    # Get last 7 days of sales grouped by day
+    today = datetime.datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+    start_date = today - datetime.timedelta(days=6)
+    
+    res = await db.execute(select(db_models.Invoice).where(db_models.Invoice.date >= start_date))
+    invoices = res.scalars().all()
+    
+    # Group by date string 'MMM DD'
+    trend_dict = {}
+    for i in range(7):
+        d = start_date + datetime.timedelta(days=i)
+        trend_dict[d.strftime('%b %d')] = 0
+        
+    for inv in invoices:
+        d_str = inv.date.strftime('%b %d')
+        if d_str in trend_dict:
+            trend_dict[d_str] += inv.total_amount
+            
+    trend_list = [{"name": k, "sales": v} for k, v in trend_dict.items()]
+    return trend_list
+
+@router.get("/recent")
+async def get_recent_sales(db: AsyncSession = Depends(get_db)):
+    res = await db.execute(select(db_models.Invoice).order_by(db_models.Invoice.date.desc()).limit(10))
+    invoices = res.scalars().all()
+    return [{
+        "id": i.id,
+        "billNumber": i.bill_number,
+        "date": i.date.isoformat(),
+        "customerId": i.customer_id,
+        "customerName": i.customer_name,
+        "totalAmount": i.total_amount,
+        "paidAmount": i.paid_amount,
+        "pendingAmount": i.pending_amount,
+        "status": i.status
+    } for i in invoices]
+
+@router.get("")
+async def get_all_sales(db: AsyncSession = Depends(get_db)):
+    res = await db.execute(select(db_models.Invoice).order_by(db_models.Invoice.date.desc()))
+    invoices = res.scalars().all()
+    return [{
+        "id": i.id,
+        "billNumber": i.bill_number,
+        "date": i.date.isoformat(),
+        "customerId": i.customer_id,
+        "customerName": i.customer_name,
+        "totalAmount": i.total_amount,
+        "paidAmount": i.paid_amount,
+        "pendingAmount": i.pending_amount,
+        "status": i.status
+    } for i in invoices]
