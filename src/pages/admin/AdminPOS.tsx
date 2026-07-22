@@ -566,7 +566,7 @@ export default function AdminPOS() {
               {paymentStatus === "Partially Paid" && (
                 <div className="text-right">
                   <p className="text-sm text-destructive font-medium">Balance Due</p>
-                  <p className="text-2xl font-bold text-destructive">{formatCurrency((total - (parseFloat(amountReceived) || 0)))}</p>
+                  <p className="text-2xl font-bold text-destructive">{formatCurrency((total - splitPayments.reduce((sum, p) => sum + (Number(p.amount) || 0), 0)))}</p>
                 </div>
               )}
               {paymentStatus === "Not Paid" && (
