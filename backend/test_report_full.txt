@@ -1,0 +1,12 @@
+POST /api/categories - Status: 200, ID: cat_84920fe9
+GET /api/categories/cat_84920fe9 - Status: 200
+PUT /api/categories/cat_84920fe9 - Status: 200
+DELETE /api/categories/cat_84920fe9 - Status: 200
+POST /api/customers - Status: 200, ID: cus_68bf7ced
+GET /api/customers/cus_68bf7ced - Status: 200
+PUT /api/customers/cus_68bf7ced - Status: 200
+DELETE /api/customers/cus_68bf7ced - Status: 200
+POST /api/suppliers - Status: 200, ID: sup_427d5918
+GET /api/suppliers/sup_427d5918 - Status: 200
+PUT /api/suppliers/sup_427d5918 - Status: 200
+DELETE /api/suppliers/sup_427d5918 - Status: 200

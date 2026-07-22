@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vignova CRM - Dashboard Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js for the Area Chart Preview -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            border: "hsl(214.3 31.8% 91.4%)",
+            background: "hsl(0 0% 100%)",
+            foreground: "hsl(222.2 84% 4.9%)",
+            primary: {
+              DEFAULT: "hsl(221.2 83.2% 53.3%)",
+              foreground: "hsl(210 40% 98%)",
+            },
+            muted: {
+              DEFAULT: "hsl(210 40% 96.1%)",
+              foreground: "hsl(215.4 16.3% 46.9%)",
+            },
+            destructive: {
+              DEFAULT: "hsl(0 84.2% 60.2%)",
+            },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: hsl(210 40% 98%); /* Light gray background */
+      color: hsl(222.2 84% 4.9%);
+    }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+</head>
+<body class="antialiased overflow-hidden">
+
+  <div class="flex h-screen w-full overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 h-full bg-white border-r border-gray-200 flex flex-col hidden md:flex shrink-0 z-20 shadow-sm relative">
+      <div class="p-5 border-b border-gray-100 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg overflow-hidden shadow-sm shrink-0 border border-gray-200">
+          <img src="logo.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/40?text=V'" />
+        </div>
+        <h2 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+          Vignova CRM
+        </h2>
+      </div>
+      
+      <div class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all bg-blue-50 text-blue-600">
+          <i data-lucide="layout-dashboard" class="h-5 w-5"></i> Dashboard
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="store" class="h-5 w-5"></i> POS
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="package" class="h-5 w-5"></i> Products
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="boxes" class="h-5 w-5"></i> Inventory
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="tags" class="h-5 w-5"></i> Categories
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="truck" class="h-5 w-5"></i> Suppliers
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="users" class="h-5 w-5"></i> Customers
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="credit-card" class="h-5 w-5"></i> Expenses
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="bar-chart-3" class="h-5 w-5"></i> Reports
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="pie-chart" class="h-5 w-5"></i> Analytics
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="bell" class="h-5 w-5"></i> Notifications
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="activity" class="h-5 w-5"></i> Activity Logs
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+          <i data-lucide="settings" class="h-5 w-5"></i> Settings
+        </a>
+      </div>
+      <div class="p-4 border-t border-gray-100">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-colors">
+          <i data-lucide="log-out" class="h-5 w-5"></i> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col relative overflow-hidden bg-slate-50/50">
+      <!-- Top Navbar -->
+      <header class="h-16 border-b border-gray-200 bg-white/60 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-30">
+        <div class="flex items-center gap-4">
+          <button class="md:hidden text-gray-500">
+            <i data-lucide="menu" class="h-5 w-5"></i>
+          </button>
+          <div class="relative hidden sm:block w-64">
+            <i data-lucide="search" class="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400"></i>
+            <input type="search" placeholder="Search..." class="w-full pl-9 pr-4 py-2 bg-gray-100 border-none rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <button class="text-gray-500 hover:text-gray-900 transition-colors relative">
+            <i data-lucide="moon" class="h-5 w-5"></i>
+          </button>
+          <button class="text-gray-500 hover:text-gray-900 transition-colors relative">
+            <i data-lucide="bell" class="h-5 w-5"></i>
+            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+          </button>
+          
+          <div class="h-9 w-9 rounded-full bg-blue-100 text-blue-600 border border-blue-200 flex items-center justify-center text-sm font-medium ml-2 cursor-pointer">
+            AD
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="flex-1 p-6 overflow-auto">
+        <div class="space-y-6 max-w-7xl mx-auto">
+          
+          <!-- Header -->
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard Overview</h1>
+              <p class="text-gray-500 mt-1">Here's what's happening in your store today.</p>
+            </div>
+          </div>
+
+          <!-- Dashboard Content Main Area -->
+          <div id="dashboard-main-content">
+            <!-- KPI Cards -->
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+              <!-- Card 1 -->
+              <div class="glass-panel rounded-xl p-6 relative overflow-hidden group border-white">
+                <div class="flex items-center justify-between mb-4">
+                  <p class="text-sm font-medium text-gray-500">Today's Sales</p>
+                  <div class="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 transition-transform group-hover:scale-110">
+                    <i data-lucide="dollar-sign" class="h-5 w-5"></i>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-900">$2,450.00</h3>
+                  <p class="text-xs text-emerald-600 mt-1 font-medium flex items-center">
+                    <i data-lucide="trending-up" class="h-3 w-3 mr-1"></i> +12% from yesterday
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="glass-panel rounded-xl p-6 relative overflow-hidden group border-white">
+                <div class="flex items-center justify-between mb-4">
+                  <p class="text-sm font-medium text-gray-500">Monthly Revenue</p>
+                  <div class="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 transition-transform group-hover:scale-110">
+                    <i data-lucide="trending-up" class="h-5 w-5"></i>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-900">$45,231.89</h3>
+                  <p class="text-xs text-emerald-600 mt-1 font-medium flex items-center">
+                    <i data-lucide="trending-up" class="h-3 w-3 mr-1"></i> +8.2% from last month
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="glass-panel rounded-xl p-6 relative overflow-hidden group border-white">
+                <div class="flex items-center justify-between mb-4">
+                  <p class="text-sm font-medium text-gray-500">Total Customers</p>
+                  <div class="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 transition-transform group-hover:scale-110">
+                    <i data-lucide="users" class="h-5 w-5"></i>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-900">1,204</h3>
+                  <p class="text-xs text-emerald-600 mt-1 font-medium flex items-center">
+                    <i data-lucide="trending-up" class="h-3 w-3 mr-1"></i> +4.5% new this week
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 4 -->
+              <div class="glass-panel rounded-xl p-6 relative overflow-hidden group border-red-200">
+                <div class="flex items-center justify-between mb-4">
+                  <p class="text-sm font-medium text-gray-500">Low Stock Items</p>
+                  <div class="h-10 w-10 rounded-full bg-red-50 flex items-center justify-center text-red-500 transition-transform group-hover:scale-110">
+                    <i data-lucide="alert-triangle" class="h-5 w-5"></i>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-900">2</h3>
+                  <p class="text-xs text-red-500 mt-1 font-medium flex items-center">
+                    Requires immediate attention
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts and Tables -->
+            <div class="grid gap-6 md:grid-cols-7">
+              <!-- Chart -->
+              <div class="md:col-span-4 glass-panel rounded-xl border border-white/80 shadow-sm bg-white/70 overflow-hidden">
+                <div class="p-6 pb-2">
+                  <h3 class="font-semibold text-lg">Sales Trend</h3>
+                </div>
+                <div class="p-6 pt-0 h-[300px] w-full relative">
+                  <canvas id="salesChart"></canvas>
+                </div>
+              </div>
+
+              <!-- Table -->
+              <div class="md:col-span-3 glass-panel rounded-xl border border-white/80 shadow-sm bg-white/70 overflow-hidden flex flex-col">
+                <div class="p-6 pb-4">
+                  <h3 class="font-semibold text-lg">Recent Sales</h3>
+                </div>
+                <div class="flex-1 px-6 pb-6">
+                  <div class="w-full overflow-auto">
+                    <table class="w-full text-sm text-left">
+                      <thead class="text-gray-500 font-medium border-b border-gray-200">
+                        <tr>
+                          <th class="pb-3 pr-4">Bill No.</th>
+                          <th class="pb-3 pr-4">Customer</th>
+                          <th class="pb-3 text-right">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors">
+                          <td class="py-3 pr-4 font-medium">#INV-001</td>
+                          <td class="py-3 pr-4">John Doe</td>
+                          <td class="py-3 text-right font-medium">$250.00</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors">
+                          <td class="py-3 pr-4 font-medium">#INV-002</td>
+                          <td class="py-3 pr-4">Alice Johnson</td>
+                          <td class="py-3 text-right font-medium">$1,420.50</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors">
+                          <td class="py-3 pr-4 font-medium">#INV-003</td>
+                          <td class="py-3 pr-4">Walk-in Customer</td>
+                          <td class="py-3 text-right font-medium">$85.20</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors">
+                          <td class="py-3 pr-4 font-medium">#INV-004</td>
+                          <td class="py-3 pr-4">Acme Corp</td>
+                          <td class="py-3 text-right font-medium">$5,200.00</td>
+                        </tr>
+                        <tr class="last:border-0 hover:bg-gray-50/50 transition-colors">
+                          <td class="py-3 pr-4 font-medium">#INV-005</td>
+                          <td class="py-3 pr-4">Jane Smith</td>
+                          <td class="py-3 text-right font-medium">$340.00</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Coming Soon Placeholder -->
+          <div id="coming-soon-placeholder" class="glass-panel p-12 rounded-2xl flex-col items-center justify-center text-center mt-6 hidden border-dashed border-2 border-gray-300">
+            <div class="h-20 w-20 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+              <i data-lucide="wrench" class="h-10 w-10 text-blue-500"></i>
+            </div>
+            <h2 id="placeholder-title" class="text-2xl font-semibold mb-2">Module</h2>
+            <p class="text-gray-500 max-w-md mx-auto">
+              This module preview is functional, but the full content is only available in the actual React application.
+            </p>
+          </div>
+          
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Chart.js implementation...
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.3)'); 
+    gradient.addColorStop(1, 'rgba(37, 99, 235, 0)');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+          label: 'Sales',
+          data: [4000, 3000, 2000, 2780, 1890, 2390, 3490],
+          borderColor: 'hsl(221.2, 83.2%, 53.3%)', 
+          backgroundColor: gradient,
+          borderWidth: 3,
+          fill: true,
+          tension: 0.4, 
+          pointRadius: 0,
+          pointHoverRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#111827', bodyColor: '#111827', borderColor: '#e5e7eb', borderWidth: 1, padding: 12, displayColors: false, callbacks: { label: function(context) { return '$' + context.parsed.y.toLocaleString(); } } } },
+        scales: {
+          x: { grid: { display: false, drawBorder: false }, ticks: { color: '#6b7280' } },
+          y: { grid: { color: '#f3f4f6', drawBorder: false, borderDash: [3, 3] }, ticks: { color: '#6b7280', callback: function(value) { return '$' + value.toLocaleString(); } } }
+        }
+      }
+    });
+
+    // Make sidebar buttons functional
+    document.addEventListener('DOMContentLoaded', () => {
+      const sidebarLinks = document.querySelectorAll('aside a:not(.text-red-500)');
+      const pageTitle = document.querySelector('h1.text-3xl');
+      const pageSubtitle = document.querySelector('h1.text-3xl + p');
+      const dashboardContent = document.getElementById('dashboard-main-content');
+      const comingSoonPlaceholder = document.getElementById('coming-soon-placeholder');
+
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          // Remove active state from all links
+          sidebarLinks.forEach(l => {
+            l.className = 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900';
+          });
+          
+          // Add active state to clicked link
+          link.className = 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all bg-blue-50 text-blue-600';
+          
+          // Get the title from the clicked link text
+          const title = link.textContent.trim();
+          
+          if (title === 'Dashboard') {
+            pageTitle.textContent = 'Dashboard Overview';
+            pageSubtitle.textContent = "Here's what's happening in your store today.";
+            dashboardContent.style.display = 'block';
+            comingSoonPlaceholder.style.display = 'none';
+          } else {
+            pageTitle.textContent = title;
+            pageSubtitle.textContent = 'Manage your ' + title.toLowerCase() + ' here.';
+            dashboardContent.style.display = 'none';
+            comingSoonPlaceholder.style.display = 'flex';
+            document.getElementById('placeholder-title').textContent = title + ' Module';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

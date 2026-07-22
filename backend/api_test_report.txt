@@ -1,0 +1,63 @@
+POST /api/users - Status: 200, ID: usr_9ea47fcf
+GET /api/users - Status: 200
+GET /api/users/usr_9ea47fcf - Status: 200
+PUT /api/users/usr_9ea47fcf - Status: 200
+DELETE /api/users/usr_9ea47fcf - Status: 200
+POST /api/categories - Status: 200, ID: cat_f05d3f88
+GET /api/categories - Status: 200
+GET /api/categories/cat_f05d3f88 - Status: 200
+PUT /api/categories/cat_f05d3f88 - Status: 200
+DELETE /api/categories/cat_f05d3f88 - Status: 200
+POST /api/customers - Status: 200, ID: cus_4c2a6cc7
+GET /api/customers - Status: 200
+GET /api/customers/cus_4c2a6cc7 - Status: 200
+PUT /api/customers/cus_4c2a6cc7 - Status: 200
+DELETE /api/customers/cus_4c2a6cc7 - Status: 200
+POST /api/suppliers - Status: 200, ID: sup_01f2ccca
+GET /api/suppliers - Status: 200
+GET /api/suppliers/sup_01f2ccca - Status: 200
+PUT /api/suppliers/sup_01f2ccca - Status: 200
+DELETE /api/suppliers/sup_01f2ccca - Status: 200
+POST /api/products - FAILED 422: {"detail":[{"type":"missing","loc":["body","name"],"msg":"Field required","input":null},{"type":"missing","loc":["body","sku"],"msg":"Field required","input":null}]}
+POST /api/inventory_logs - Status: 200, ID: inv_ff34f76b
+GET /api/inventory_logs - Status: 200
+GET /api/inventory_logs/inv_ff34f76b - Status: 200
+PUT /api/inventory_logs/inv_ff34f76b - Status: 200
+DELETE /api/inventory_logs/inv_ff34f76b - Status: 200
+POST /api/carts - Status: 200, ID: crt_9a046c3c
+GET /api/carts - Status: 200
+GET /api/carts/crt_9a046c3c - Status: 200
+PUT /api/carts/crt_9a046c3c - Status: 200
+DELETE /api/carts/crt_9a046c3c - Status: 200
+POST /api/orders - Status: 200, ID: ord_c8d05da9
+GET /api/orders - Status: 200
+GET /api/orders/ord_c8d05da9 - Status: 200
+PUT /api/orders/ord_c8d05da9 - Status: 200
+DELETE /api/orders/ord_c8d05da9 - Status: 200
+POST /api/invoices - Status: 200, ID: inv_4f7a842b
+GET /api/invoices - Status: 200
+GET /api/invoices/inv_4f7a842b - Status: 200
+PUT /api/invoices/inv_4f7a842b - Status: 200
+DELETE /api/invoices/inv_4f7a842b - Status: 200
+POST /api/payments - Status: 200, ID: pay_c9700882
+GET /api/payments - Status: 200
+GET /api/payments/pay_c9700882 - Status: 200
+PUT /api/payments/pay_c9700882 - Status: 200
+DELETE /api/payments/pay_c9700882 - Status: 200
+POST /api/expenses - Status: 200, ID: exp_6429cfe0
+GET /api/expenses - Status: 200
+GET /api/expenses/exp_6429cfe0 - Status: 200
+PUT /api/expenses/exp_6429cfe0 - Status: 200
+DELETE /api/expenses/exp_6429cfe0 - Status: 200
+POST /api/activity_logs - Status: 200, ID: act_e6a4ce59
+GET /api/activity_logs - Status: 200
+GET /api/activity_logs/act_e6a4ce59 - Status: 200
+PUT /api/activity_logs/act_e6a4ce59 - Status: 200
+DELETE /api/activity_logs/act_e6a4ce59 - Status: 200
+POST /api/notifications - Status: 200, ID: not_d6329a35
+GET /api/notifications - Status: 200
+GET /api/notifications/not_d6329a35 - Status: 200
+PUT /api/notifications/not_d6329a35 - Status: 200
+DELETE /api/notifications/not_d6329a35 - Status: 200
+GET /api/settings - Status: 200
+PUT /api/settings - Status: 200

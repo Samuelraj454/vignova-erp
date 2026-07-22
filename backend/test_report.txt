@@ -1,0 +1,15 @@
+GET /api/users - Status: 200
+GET /api/customers - Status: 200
+GET /api/suppliers - Status: 200
+GET /api/categories - Status: 200
+GET /api/products - Status: 200
+GET /api/inventory_logs - Status: 200
+GET /api/carts - Status: 200
+GET /api/orders - Status: 200
+GET /api/invoices - Status: 200
+GET /api/payments - Status: 200
+GET /api/expenses - Status: 200
+GET /api/activity_logs - Status: 200
+GET /api/notifications - Status: 200
+GET /api/settings - Status: 200
+Tested all general routes.
