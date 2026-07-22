@@ -66,7 +66,10 @@ export default function AdminPOS() {
   );
 
   const saveCartState = (newCart: CartItem[]) => {
-    if (!cartEntity) return;
+    if (!cartEntity) {
+      toast.error("Cart session not initialized. Please refresh the page.");
+      return;
+    }
     const subtotal = newCart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
     const tax = subtotal * 0.05;
     const total = Math.max(0, subtotal + tax - discount);
