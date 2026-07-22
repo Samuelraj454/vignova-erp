@@ -46,22 +46,23 @@ export const getSalesTrend = async (): Promise<any> => {
   return response.data;
 };
 
-export const completeSale = async (data: Omit<Sale, "id" | "billNumber" | "date"> & { cartId?: string }): Promise<{ id: string; billNumber: string }> => {
+export const completeSale = async (data: Omit<Sale, "id" | "billNumber" | "date"> & { cartId?: string, payments?: any[], status?: string }): Promise<{ id: string; billNumber: string }> => {
   const payload = {
-    cartId: data.cartId,
-    customerId: data.customerId,
-    customerName: data.customerName,
+    cart_id: data.cartId,
+    customer_id: data.customerId,
+    customer_name: data.customerName,
     items: data.items,
     subtotal: data.items.reduce((sum, item) => sum + item.total, 0),
     discount: data.discount,
     tax: data.tax,
-    grandTotal: data.totalAmount,
-    paidAmount: data.paidAmount,
-    paymentMethod: data.paymentMethod,
-    dueDate: data.dueDate
+    grand_total: data.totalAmount,
+    payments: data.payments || [],
+    status: data.status,
+    due_date: data.dueDate,
+    bill_number: "INV-" + new Date().getFullYear() + String(Math.floor(Math.random() * 10000)).padStart(4, '0')
   };
   const response = await api.post('/sales/checkout', payload);
-  return { id: response.data.order_id, billNumber: response.data.billNumber };
+  return { id: response.data.order_id || response.data.id, billNumber: payload.bill_number };
 };
 
 export const receivePayment = async (data: { saleId: string; amount: number; method: string }): Promise<boolean> => {
