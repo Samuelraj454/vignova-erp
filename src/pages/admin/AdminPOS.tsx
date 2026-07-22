@@ -523,7 +523,7 @@ export default function AdminPOS() {
                         <div className="flex justify-between items-end mt-4">
                           <div>
                             <p className="text-sm font-medium">{sale.customerName}</p>
-                            <p className="text-xs text-muted-foreground">{sale.items.length} items</p>
+                            <p className="text-xs text-muted-foreground">{(sale.items?.length) || 0} items</p>
                           </div>
                           <div className="text-right">
                             <p className="text-lg font-bold text-primary">{formatCurrency(sale.totalAmount)}</p>
