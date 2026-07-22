@@ -12,11 +12,12 @@ import datetime
 import uuid
 
 router = APIRouter(prefix="/sales", tags=["sales"])
+from backend.schemas import CamelBase
 
-class CheckoutRequest(BaseModel):
+class CheckoutRequest(CamelBase):
     cart_id: str
-    customer_id: str | None
-    customer_name: str | None
+    customer_id: str | None = None
+    customer_name: str | None = None
     items: List[Dict[str, Any]]
     subtotal: float
     discount: float
@@ -24,8 +25,10 @@ class CheckoutRequest(BaseModel):
     grand_total: float
     payments: List[Dict[str, Any]] = []
     due_date: str | None = None
-    bill_number: str
+    bill_number: str | None = None
     status: str = "Paid"
+    paid_amount: float | None = None
+    payment_method: str | None = None
 
 @router.post("/checkout")
 async def process_checkout(req: CheckoutRequest, db: AsyncSession = Depends(get_db), current_user: User = Depends(require_role(["Admin", "Manager", "Cashier", "Employee"]))):
@@ -56,10 +59,22 @@ async def process_checkout(req: CheckoutRequest, db: AsyncSession = Depends(get_
             if cart:
                 cart.status = "Completed"
             
+            import random
+            
+            # Fallbacks for old frontend cached requests
+            req_payments = req.payments
+            if not req_payments and req.paid_amount is not None:
+                req_payments = [{"method": req.payment_method or "Cash", "amount": req.paid_amount}]
+                
+            bill_num = req.bill_number
+            if not bill_num:
+                bill_num = f"INV-{now.year}{str(random.randint(0, 9999)).zfill(4)}"
+
             # 3. Handle Inventory and create InventoryLogs
             for item in req.items:
-                prod_id = item["product_id"]
-                qty = item["quantity"]
+                prod_id = item.get("product_id") or item.get("productId")
+                qty = item.get("quantity", 1)
+                
                 prod_res = await db.execute(select(db_models.Product).where(db_models.Product.id == prod_id))
                 prod = prod_res.scalars().first()
                 if not prod:
@@ -83,7 +98,7 @@ async def process_checkout(req: CheckoutRequest, db: AsyncSession = Depends(get_
                 db.add(log)
             
             # 4. Calculate Paid Amount and create Invoice
-            total_paid = sum(p.get("amount", 0) for p in req.payments)
+            total_paid = sum(p.get("amount", 0) for p in req_payments)
             pending_amt = req.grand_total - total_paid
             inv_status = "Paid" if pending_amt <= 0 else "Partially Paid" if total_paid > 0 else "Not Paid"
             # allow frontend to override to Pending if needed
@@ -95,7 +110,7 @@ async def process_checkout(req: CheckoutRequest, db: AsyncSession = Depends(get_
             invoice = db_models.Invoice(
                 id=invoice_id,
                 order_id=order_id,
-                bill_number=req.bill_number,
+                bill_number=bill_num,
                 date=now,
                 customer_id=req.customer_id,
                 customer_name=req.customer_name,
@@ -108,7 +123,7 @@ async def process_checkout(req: CheckoutRequest, db: AsyncSession = Depends(get_
             db.add(invoice)
             
             # 5. Create Payment records
-            for p in req.payments:
+            for p in req_payments:
                 amt = p.get("amount", 0)
                 method = p.get("method", "Cash")
                 if amt > 0:
