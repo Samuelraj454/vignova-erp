@@ -482,10 +482,55 @@ async def delete_cart(id: str, db: AsyncSession = Depends(get_db), current_user:
     db_item = result.scalars().first()
     if not db_item:
         raise HTTPException(status_code=404)
-    await db.delete(db_item)
+    db.delete(db_item)
     await db.commit()
     await ws_manager.broadcast("carts")
-    return {"success": True}
+    return {"status": "success"}
+
+# ================= POS Cart Specific Endpoints =================
+
+@router.get("/cart/active", response_model=schemas.CartResponse)
+async def get_active_cart(db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    result = await db.execute(
+        select(db_models.Cart)
+        .where(db_models.Cart.status == "Active", db_models.Cart.cashier_id == current_user.id)
+    )
+    cart = result.scalars().first()
+    
+    if not cart:
+        # Create a new active cart for this user
+        import uuid
+        cart = db_models.Cart(
+            id=f"crt_{uuid.uuid4().hex[:8]}",
+            status="Active",
+            cashier_id=current_user.id,
+            items=[],
+            subtotal=0.0,
+            tax=0.0,
+            discount=0.0,
+            grand_total=0.0
+        )
+        db.add(cart)
+        await db.commit()
+        await db.refresh(cart)
+        
+    return cart
+
+@router.put("/cart/{id}", response_model=schemas.CartResponse)
+async def update_pos_cart(id: str, item: schemas.CartCreate, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    item_dict = item.model_dump(exclude_unset=True)
+    result = await db.execute(select(db_models.Cart).where(db_models.Cart.id == id))
+    db_item = result.scalars().first()
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Cart not found")
+        
+    for k, v in item_dict.items():
+        setattr(db_item, k, v)
+        
+    await db.commit()
+    await db.refresh(db_item)
+    await ws_manager.broadcast("carts")
+    return db_item
 
 
 # ================= Order =================
