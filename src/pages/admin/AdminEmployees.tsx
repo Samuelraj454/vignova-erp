@@ -223,8 +223,8 @@ export default function AdminEmployees() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="phone">Phone</Label>
-                <Input id="phone" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl" />
+                <Label htmlFor="phone">Phone *</Label>
+                <Input id="phone" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl" />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="role">Role *</Label>
