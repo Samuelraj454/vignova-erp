@@ -87,9 +87,15 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
     result = await db.execute(select(User).where(
         or_(User.email == form_data.username, User.employee_id == form_data.username)
     ))
-    user = result.scalars().first()
+    users = result.scalars().all()
     
-    if not user or not verify_password(form_data.password, user.password_hash):
+    user = None
+    for u in users:
+        if verify_password(form_data.password, u.password_hash):
+            user = u
+            break
+            
+    if not user:
         # Log failed attempt
         log = ActivityLog(
             id=f"act_{uuid.uuid4().hex[:8]}",
