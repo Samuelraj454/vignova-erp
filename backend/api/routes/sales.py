@@ -37,7 +37,24 @@ async def process_checkout(req: CheckoutRequest, db: AsyncSession = Depends(get_
         async with db.begin_nested():
             now = datetime.datetime.utcnow()
             
-            # 1. Create Order
+            # 1. Handle Auto-Creating Customers for "Walk-in" with custom names
+            if not req.customer_id and req.customer_name and req.customer_name.lower() != "walk-in customer":
+                # Check if customer already exists by name
+                existing_cust_res = await db.execute(select(db_models.Customer).where(db_models.Customer.name == req.customer_name))
+                existing_cust = existing_cust_res.scalars().first()
+                if existing_cust:
+                    req.customer_id = existing_cust.id
+                else:
+                    new_cust_id = f"cus_{uuid.uuid4().hex[:8]}"
+                    new_cust = db_models.Customer(
+                        id=new_cust_id,
+                        name=req.customer_name,
+                        created_at=now
+                    )
+                    db.add(new_cust)
+                    req.customer_id = new_cust_id
+            
+            # 2. Create Order
             order_id = f"ord_{uuid.uuid4().hex[:8]}"
             order = db_models.Order(
                 id=order_id,
